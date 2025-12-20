@@ -1,6 +1,6 @@
 {
 	"main": "dist/_worker.js/index.js",
-	"name": "worst-of-breed",
+	"name": "worstofbreed",
   "compatibility_date": "2025-12-20",
   "compatibility_flags": [
     "nodejs_compat",
