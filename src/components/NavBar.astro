@@ -46,47 +46,63 @@ const navItems = [
   .brutalist-nav {
     display: flex;
     flex-wrap: wrap; /* Auf Mobile umbrechen */
-    border: 4px solid #111;
-    background: #fff;
-    margin-bottom: 40px;
-    box-shadow: 8px 8px 0 #666;
-    font-family: "Space Mono", monospace;
+    border: var(--border-thick);
+    background: var(--paper);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: 8px 8px 0 var(--shadow);
+    font-family: var(--font-mono);
   }
 
   .nav-item {
-    flex: 1; /* Alle gleich breit */
+    flex: 1 1 auto; /* Allow grow and shrink, auto basis */
     text-align: center;
     padding: 15px 10px;
     text-decoration: none;
-    color: #111;
+    color: var(--ink);
     font-weight: bold;
-    border-right: 4px solid #111;
-    min-width: 200px; /* Damit es auf Mobile nicht zu eng wird */
+    border-right: var(--border-thick);
+    border-bottom: var(
+      --border-thick
+    ); /* Default bottom border for mobile stacked items */
+    min-width: 100%; /* Full width on mobile by default */
     transition: all 0.1s;
     text-transform: uppercase;
     font-size: 0.9rem;
   }
 
-  /* Der letzte darf keinen Rahmen rechts haben */
-  .nav-item:last-child {
-    border-right: none;
+  @media (min-width: 768px) {
+    .nav-item {
+      min-width: auto;
+      border-bottom: none; /* Reset bottom border for desktop */
+    }
+
+    /* Last item on desktop shouldn't have right border */
+    .nav-item:last-child {
+      border-right: none;
+    }
+  }
+
+  /* Der letzte item hat nie einen border-bottom im gestapelten zustand, 
+     aber im desktop modus muss man aufpassen. */
+  .nav-item:last-of-type {
+    border-bottom: none;
   }
 
   /* Hover Effekt: Neon */
   .nav-item:hover {
-    background: #ff00ff;
+    background: var(--accent);
     color: #000;
   }
 
   /* Active State: Invertiert (Schwarz auf Weiß) */
   .nav-item.active {
-    background: #111;
-    color: #fff;
+    background: var(--ink);
+    color: var(--paper);
     pointer-events: none; /* Klickbar machen sinnlos */
   }
 
   .nav-item.active:hover {
-    background: #111; /* Kein Hover beim aktiven Item */
+    background: var(--ink); /* Kein Hover beim aktiven Item */
   }
 
   /* Die Klammern [] verstecken wir normalerweise, zeigen sie aber beim Hover/Active */
@@ -97,9 +113,9 @@ const navItems = [
   .nav-item:hover .bracket,
   .nav-item.active .bracket {
     opacity: 1;
-    color: #ff00ff;
+    color: var(--accent);
   }
   .nav-item.active .bracket {
-    color: #fff;
+    color: var(--paper);
   } /* Bei Active weiß */
 </style>

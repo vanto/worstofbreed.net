@@ -1,0 +1,51 @@
+/* Modern CSS Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* CSS Variables aka Design Tokens */
+:root {
+  /* Colors */
+  --ink: #111;
+  --paper: #fff;
+  --accent: #ff00ff;
+  --shadow: #666;
+  --bg-color: #e0e0e0;
+  
+  /* Typography */
+  --font-primary: "Space Mono", monospace;
+  --font-mono: "Space Mono", monospace;
+  
+  /* Spacing */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 4rem;
+  
+  /* Borders */
+  --border-thick: 4px solid var(--ink);
+  --border-thin: 2px solid var(--ink);
+}

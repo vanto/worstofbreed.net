@@ -74,22 +74,22 @@ import Layout from "../layouts/Layout.astro";
 <style>
     .intro {
         margin-bottom: 4rem;
-        border-bottom: 4px solid #000;
+        border-bottom: var(--border-thick);
         padding-bottom: 2rem;
     }
 
     h2 {
         font-size: 2.5rem;
         margin-bottom: 1rem;
-        background: black;
-        color: white;
+        background: var(--ink);
+        color: var(--paper);
         display: inline-block;
         padding: 0.5rem 1rem;
     }
 
     .card {
-        background: #fff;
-        border: 4px solid #000;
+        background: var(--paper);
+        border: var(--border-thick);
         padding: 1.5rem;
         display: flex;
         flex-direction: column;
@@ -104,8 +104,8 @@ import Layout from "../layouts/Layout.astro";
 
     .card:hover {
         transform: translate(-5px, -5px);
-        box-shadow: 8px 8px 0px #ff00ff;
-        background: #fff; /* override layout a:hover */
+        box-shadow: 8px 8px 0px var(--accent);
+        background: var(--paper); /* override layout a:hover */
     }
 
     .card-header {
@@ -130,14 +130,20 @@ import Layout from "../layouts/Layout.astro";
         margin-top: auto;
         font-weight: bold;
         text-align: right;
-        color: #ff00ff;
+        color: var(--accent);
     }
 
     .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 4rem;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
         margin-bottom: 4rem;
+    }
+
+    @media (min-width: 768px) {
+        .grid {
+            gap: 4rem;
+        }
     }
 
     .testimonials {
@@ -146,7 +152,7 @@ import Layout from "../layouts/Layout.astro";
 
     .testimonials h3 {
         text-transform: uppercase;
-        border-bottom: 2px solid #000;
+        border-bottom: 2px solid var(--ink);
         display: inline-block;
         margin-bottom: 2rem;
     }
@@ -158,10 +164,10 @@ import Layout from "../layouts/Layout.astro";
     }
 
     .quote {
-        border-left: 8px solid #ff00ff;
+        border-left: 8px solid var(--accent);
         padding-left: 1rem;
         margin: 0;
-        background: #fff;
+        background: var(--paper);
         padding: 1.5rem;
         font-style: italic;
     }
@@ -173,19 +179,25 @@ import Layout from "../layouts/Layout.astro";
         font-style: normal;
         font-size: 0.8rem;
         text-transform: uppercase;
-        color: #666;
+        color: var(--shadow);
     }
 
     .manifesto {
-        margin-top: 5rem;
-        border: 2px solid #000;
+        margin-top: 3rem;
+        border: 2px solid var(--ink);
         padding: 2rem;
         background: #f4f4f4;
     }
 
+    @media (min-width: 768px) {
+        .manifesto {
+            margin-top: 5rem;
+        }
+    }
+
     .manifesto h3 {
         text-transform: uppercase;
-        border-bottom: 2px solid #000;
+        border-bottom: 2px solid var(--ink);
         display: inline-block;
     }
 
@@ -199,11 +211,11 @@ import Layout from "../layouts/Layout.astro";
 
     .manifesto li::before {
         content: "[!] ";
-        color: #ff00ff;
+        color: var(--accent);
     }
 
     .signature {
         font-family: monospace;
-        color: #666;
+        color: var(--shadow);
     }
 </style>

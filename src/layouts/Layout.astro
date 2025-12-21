@@ -1,5 +1,6 @@
 ---
 import NavBar from "../components/NavBar.astro";
+import "../styles/global.css";
 const { title } = Astro.props;
 ---
 
@@ -7,6 +8,7 @@ const { title } = Astro.props;
     <head>
         <title>worstofbreed.net - {title}</title>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
             href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
@@ -16,31 +18,48 @@ const { title } = Astro.props;
         <link rel="apple-touch-icon" href="/favicon.svg" />
     </head>
     <body>
-        <h1>Worst<span style="color:#ff00ff">Of</span>Breed_</h1>
+        <h1>Worst<span style="color:var(--accent)">Of</span>Breed_</h1>
 
         <NavBar />
         <slot />
     </body>
     <style>
         body {
-            background: #e0e0e0;
-            font-family: "Space Mono", monospace;
-            padding: 2rem;
+            background: var(--bg-color);
+            font-family: var(--font-primary);
+            padding: var(--spacing-md);
+            max-width: 1400px;
+            margin: 0 auto;
         }
+
+        @media (min-width: 768px) {
+            body {
+                padding: var(--spacing-lg);
+            }
+        }
+
         h1 {
             text-transform: uppercase;
-            font-size: 3rem;
-            text-shadow: 4px 4px 0px #666;
-            margin-bottom: 2rem;
+            font-size: 2rem;
+            text-shadow: 4px 4px 0px var(--shadow);
+            margin-bottom: var(--spacing-lg);
+            word-break: break-word;
         }
+
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+        }
+
         /* .grid moved to specific pages for better control */
         a {
-            color: black;
+            color: var(--ink);
             text-decoration: none;
-            border-bottom: 2px solid black;
+            border-bottom: 2px solid var(--ink);
         }
         a:hover {
-            background: #ff00ff;
+            background: var(--accent);
         }
     </style>
 </html>

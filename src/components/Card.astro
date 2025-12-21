@@ -1,41 +1,41 @@
 ---
 const { entry } = Astro.props;
 const { data } = entry;
-const { title, category, stats, quote, specialAbility, imagePlaceholder } = data;
+const { title, category, stats, quote, specialAbility, imagePlaceholder } =
+  data;
 
 const { Content } = await entry.render();
 ---
 
 <div class="flip-container">
   <div class="flipper">
-    
-    <article class="brutalist-card front">
+    <article class="brutalist-card front" id="card-front">
       <header class="card-header">
         <span class="title">{title}</span>
         <span class="badge">{category}</span>
       </header>
 
       <div class="card-visual">
-        <span class="visual-icon">{imagePlaceholder || '⚠️'}</span>
+        <span class="visual-icon">{imagePlaceholder || "⚠️"}</span>
         <div class="scanlines"></div>
       </div>
 
       <div class="stats-grid">
         <div class="stat-box">
-            <span class="label">Latency</span>
-            <span class="value">{stats.latency}/100</span>
+          <span class="label">Latency</span>
+          <span class="value">{stats.latency}/100</span>
         </div>
         <div class="stat-box">
-            <span class="label">Pain</span>
-            <span class="value text-alert">{stats.pain}/100</span>
+          <span class="label">Pain</span>
+          <span class="value text-alert">{stats.pain}/100</span>
         </div>
         <div class="stat-box">
-            <span class="label">Maintain</span>
-            <span class="value">{stats.maintainability}/100</span>
+          <span class="label">Maintain</span>
+          <span class="value">{stats.maintainability}/100</span>
         </div>
         <div class="stat-box">
-            <span class="label">Resume</span>
-            <span class="value">{stats.resumeValue}</span>
+          <span class="label">Resume</span>
+          <span class="value">{stats.resumeValue}</span>
         </div>
       </div>
 
@@ -46,60 +46,89 @@ const { Content } = await entry.render();
           <p class="ability-desc">{specialAbility.description}</p>
         </div>
       </div>
-      
-      <footer class="card-footer">HOVER FOR ANALYSIS</footer>
+
+      <footer class="card-footer">
+        <span class="desktop-hint">HOVER FOR ANALYSIS</span>
+        <span class="mobile-hint">TAP FOR ANALYSIS</span>
+      </footer>
     </article>
 
     <article class="brutalist-card back">
-        <header class="card-header invert">
-            <span>// ANALYSIS_LOG</span>
-        </header>
-        <div class="markdown-content">
-            <Content />
-        </div>
-        <footer class="card-footer invert">END OF FILE</footer>
+      <header class="card-header invert">
+        <span>// ANALYSIS_LOG</span>
+      </header>
+      <div class="markdown-content">
+        <Content />
+      </div>
+      <footer class="card-footer invert">
+        <span class="desktop-hint">HOVER TO RETURN</span>
+        <span class="mobile-hint">TAP TO RETURN</span>
+      </footer>
     </article>
-
   </div>
 </div>
 
-<style>
-  :root {
-    --ink: #111;
-    --paper: #fff;
-    --accent: #ff00ff;
-    --shadow: #666;
-    --font-mono: 'Courier New', monospace;
-  }
+<script>
+  // Handle touch interactions for card flipping
+  const flipContainers = document.querySelectorAll(".flip-container");
 
+  flipContainers.forEach((container) => {
+    container.addEventListener("click", (e) => {
+      // If we are about to flip this one OPEN (add class), we must close others first.
+      // Actually strictly, just close everyone else regardless of whether we are opening or closing this one.
+
+      flipContainers.forEach((other) => {
+        if (other !== container && other.classList.contains("flipped")) {
+          other.classList.remove("flipped");
+        }
+      });
+
+      container.classList.toggle("flipped");
+    });
+  });
+</script>
+
+<style>
   .flip-container {
     perspective: 1000px;
-    width: 350px;
-    height: 550px;
+    width: 100%; /* Fluid width */
+    max-width: 350px; /* Max width */
+    aspect-ratio: 9/16; /* Social Media / Story format */
+    position: relative;
+    cursor: pointer;
   }
 
-  .flip-container:hover .flipper {
+  /* Desktop: Hover to flip */
+  @media (hover: hover) {
+    .flip-container:hover .flipper {
+      transform: rotateY(180deg);
+    }
+  }
+
+  /* Mobile/Touch: Class toggle to flip */
+  .flip-container.flipped .flipper {
     transform: rotateY(180deg);
   }
 
   .flipper {
-    transition: 0.2s;
+    transition: 0.6s;
     transform-style: preserve-3d;
     position: relative;
     width: 100%;
     height: 100%;
   }
 
-  .front, .back {
+  .front,
+  .back {
     width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
     left: 0;
     backface-visibility: hidden;
-    border: 4px solid var(--ink);
+    border: var(--border-thick);
     background: var(--paper);
-    box-shadow: 14px 14px 0px var(--shadow);
+    box-shadow: 8px 8px 0px var(--shadow); /* Reduced shadow slightly for better fit */
     display: flex;
     flex-direction: column;
   }
@@ -107,6 +136,7 @@ const { Content } = await entry.render();
   .front {
     z-index: 2;
     transform: rotateY(0deg);
+    pointer-events: auto;
   }
 
   .back {
@@ -114,6 +144,25 @@ const { Content } = await entry.render();
     background: var(--ink);
     color: var(--paper);
     overflow: hidden;
+    pointer-events: none; /* Initially not interactable */
+  }
+
+  /* When flipped, swap pointer events */
+  .flip-container.flipped .front {
+    pointer-events: none;
+  }
+  .flip-container.flipped .back {
+    pointer-events: auto;
+  }
+
+  /* Desktop hover state logic for pointer events (optional/tricky, but CSS hover handles transform) */
+  @media (hover: hover) {
+    .flip-container:hover .front {
+      pointer-events: none;
+    }
+    .flip-container:hover .back {
+      pointer-events: auto;
+    }
   }
 
   .card-header {
@@ -133,30 +182,141 @@ const { Content } = await entry.render();
 
   .markdown-content {
     padding: 15px;
-    font-family: 'Space Mono', monospace;
+    font-family: var(--font-mono);
     font-size: 0.85rem;
     line-height: 1.4;
     flex-grow: 1;
     overflow-y: auto;
   }
 
-  .markdown-content :global(h1) { font-size: 1.1rem; text-decoration: underline; margin-top: 0; color: var(--accent); }
-  .markdown-content :global(p) { margin-bottom: 10px; }
-  .markdown-content :global(strong) { color: var(--accent); }
-  .markdown-content :global(ul) { padding-left: 20px; }
+  .markdown-content :global(h1) {
+    font-size: 1.1rem;
+    text-decoration: underline;
+    margin-top: 0;
+    color: var(--accent);
+  }
+  .markdown-content :global(p) {
+    margin-bottom: 10px;
+  }
+  .markdown-content :global(strong) {
+    color: var(--accent);
+  }
+  .markdown-content :global(ul) {
+    padding-left: 20px;
+  }
 
-  .card-visual { height: 140px; border-bottom: 4px solid var(--ink); display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; background: #eee; }
-  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 4px solid var(--ink); }
-  .stat-box { padding: 5px 8px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
-  .stat-box:nth-child(even) { border-right: none; }
-  .stat-box .label { display: block; font-size: 0.6rem; text-transform: uppercase; opacity: 0.6; }
-  .card-body { padding: 10px; flex-grow: 1; }
-  .quote { border-left: 4px solid var(--accent); padding-left: 10px; font-style: italic; margin: 0 0 15px 0; font-size: 0.9rem;}
-  .ability { background: #f0f0f0; border: 2px solid var(--ink); padding: 8px; font-size: 0.8rem;}
-  .ability-title { font-weight: bold; display: block; text-transform: uppercase; }
-  .card-footer { padding: 5px; font-size: 0.7rem; text-align: right; border-top: 4px solid var(--ink); background: #eee;}
-  .badge { background: var(--accent); color: var(--ink); font-size: 0.7rem; display: inline-flex; align-items: center; padding: 2px 6px; line-height: 1;}
-  .text-alert { color: red; font-weight: bold; }
-  .scanlines { position: absolute; top:0; left:0; right:0; bottom:0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 2px, 3px 100%; pointer-events: none;}
+  /* Adjusted visual height percentage */
+  .card-visual {
+    flex-basis: 25%;
+    border-bottom: 4px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    position: relative;
+    background: #eee;
+  }
 
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 4px solid var(--ink);
+  }
+  .stat-box {
+    padding: 5px 8px;
+    border-right: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+  }
+  .stat-box:nth-child(even) {
+    border-right: none;
+  }
+  .stat-box .label {
+    display: block;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .card-body {
+    padding: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .quote {
+    border-left: 4px solid var(--accent);
+    padding-left: 10px;
+    font-style: italic;
+    margin: 0 0 10px 0;
+    font-size: 0.9rem;
+  }
+  .ability {
+    background: #f0f0f0;
+    border: 2px solid var(--ink);
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+  .ability-title {
+    font-weight: bold;
+    display: block;
+    text-transform: uppercase;
+  }
+
+  .card-footer {
+    padding: 5px;
+    font-size: 0.7rem;
+    text-align: right;
+    border-top: 4px solid var(--ink);
+    background: #eee;
+  }
+
+  .badge {
+    background: var(--accent);
+    color: var(--ink);
+    font-size: 0.7rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 6px;
+    line-height: 1;
+  }
+  .text-alert {
+    color: red;
+    font-weight: bold;
+  }
+  .scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+      linear-gradient(
+        90deg,
+        rgba(255, 0, 0, 0.06),
+        rgba(0, 255, 0, 0.02),
+        rgba(0, 0, 255, 0.06)
+      );
+    background-size:
+      100% 2px,
+      3px 100%;
+    pointer-events: none;
+  }
+
+  .desktop-hint {
+    display: none;
+  }
+  .mobile-hint {
+    display: inline;
+  }
+
+  @media (hover: hover) {
+    .desktop-hint {
+      display: inline;
+    }
+    .mobile-hint {
+      display: none;
+    }
+  }
 </style>
