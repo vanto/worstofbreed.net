@@ -1,0 +1,18 @@
+---
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+    // We only generate one index page, but we need to know the latest edition during build
+    // Actually, for a static index page that redirects, we don't need getStaticPaths if it's not a dynamic route.
+    // But we need to fetch data to know where to redirect.
+    return [];
+}
+
+const blips = await getCollection("blips");
+const editions = new Set<string>();
+blips.forEach((b) => editions.add(b.data.edition || "2025"));
+const sortedEditions = Array.from(editions).sort(); // Lexicographically sort
+const latestEdition = sortedEditions[sortedEditions.length - 1];
+
+return Astro.redirect(`/radar/${latestEdition}`);
+---

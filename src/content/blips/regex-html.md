@@ -4,6 +4,8 @@ quadrant: 4
 status: "BURN"
 x: 15
 y: 15
+edition: "2025"
+dateAdded: 2025-12-21
 ---
 Zalgo calls.
 

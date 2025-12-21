@@ -1,21 +1,6 @@
 ---
 // src/components/RadarGrid.astro
-import { getCollection } from "astro:content";
-
-const blipsRaw = await getCollection("blips");
-
-// Wir müssen den Content für jeden Blip rendern
-const blips = await Promise.all(
-  blipsRaw.map(async (entry) => {
-    const { Content } = await entry.render();
-    return {
-      ...entry.data,
-      id: entry.slug, // Use slug as ID for highlighting
-      Content, // The rendered markdown component
-      // Map data to expected format if needed, but schema matches mostly
-    };
-  }),
-);
+const { blips } = Astro.props;
 
 const statusMap = {
   BURN: { icon: "💀", color: "#ff0055", label: "BURN WITH FIRE" },

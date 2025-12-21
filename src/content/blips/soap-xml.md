@@ -4,6 +4,8 @@ quadrant: 2
 status: "CONTAINMENT"
 x: 20
 y: 25
+edition: "2025"
+dateAdded: 2025-12-21
 ---
 It just won't die.
 

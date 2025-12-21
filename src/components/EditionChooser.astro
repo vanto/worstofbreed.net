@@ -1,0 +1,43 @@
+---
+interface Props {
+    editions: string[];
+    currentEdition: string;
+}
+
+const { editions, currentEdition } = Astro.props;
+---
+
+<div class="edition-chooser">
+    <label for="edition-select">Edition:</label>
+    <select
+        id="edition-select"
+        onchange="window.location.href = `/radar/${this.value}`"
+    >
+        {
+            editions.map((edition) => (
+                <option value={edition} selected={edition === currentEdition}>
+                    {edition}
+                </option>
+            ))
+        }
+    </select>
+</div>
+
+<style>
+    .edition-chooser {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        font-family: "Space Mono", monospace;
+    }
+
+    select {
+        padding: 5px;
+        font-family: inherit;
+        border: 2px solid #111;
+        background: #fff;
+        cursor: pointer;
+    }
+</style>

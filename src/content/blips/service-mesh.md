@@ -4,6 +4,8 @@ quadrant: 1
 status: "RESUME"
 x: 60
 y: 40
+edition: "2025"
+dateAdded: 2025-12-21
 ---
 Looks good on LinkedIn.
 

@@ -4,6 +4,8 @@ quadrant: 3
 status: "RESUME"
 x: 50
 y: 60
+edition: "2025"
+dateAdded: 2025-12-21
 ---
 We test the tests.
 

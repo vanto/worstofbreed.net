@@ -1,0 +1,80 @@
+---
+import { getCollection } from "astro:content";
+import RadarGrid from "../../components/RadarGrid.astro";
+import RadarLegend from "../../components/RadarLegend.astro";
+import Layout from "../../layouts/Layout.astro";
+import ContributionCta from "../../components/ContributionCta.astro";
+import EditionChooser from "../../components/EditionChooser.astro";
+
+export async function getStaticPaths() {
+    const blipsRaw = await getCollection("blips");
+
+    // Normalize editions: treat missing as "2025" (or current year, but let's stick to explicit or a default)
+    // Logic: collect all unique editions found in blips.
+    const allEditions = new Set<string>();
+    blipsRaw.forEach((blip) => {
+        if (blip.data.edition) {
+            allEditions.add(blip.data.edition);
+        } else {
+            // Fallback for blips without edition?
+            // User request says "Blips have an edition field, which is a string."
+            // src/content/config.ts says `edition: z.string().optional()`
+            // I will treat undefined as "2025" for now or just log existing ones.
+            // Let's assume if it's missing, it belongs to the "default" edition which we can call "2025" as per example.
+            allEditions.add("2025");
+        }
+    });
+
+    const sortedEditions = Array.from(allEditions).sort().reverse(); // Newest first for chooser usually, but sort however
+
+    return await Promise.all(
+        sortedEditions.map(async (edition) => {
+            // Filter blips for this edition
+            const editionBlipsRaw = blipsRaw.filter(
+                (blip) => (blip.data.edition || "2025") === edition,
+            );
+
+            // Render blips
+            const blips = await Promise.all(
+                editionBlipsRaw.map(async (entry) => {
+                    const { Content } = await entry.render();
+                    return {
+                        ...entry.data,
+                        id: entry.slug,
+                        Content,
+                    };
+                }),
+            );
+
+            return {
+                params: { edition },
+                props: {
+                    edition,
+                    editions: sortedEditions,
+                    blips,
+                },
+            };
+        }),
+    );
+}
+
+const { edition, editions, blips } = Astro.props;
+---
+
+<Layout title={`Tech Horror Radar - ${edition}`}>
+    <h1>Tech Horror <span style="color:#ff00ff">Radar</span></h1>
+
+    <p
+        style="max-width: 800px; margin-bottom: 30px; border-left: 4px solid #111; padding-left: 20px; font-style: italic;"
+    >
+        // WARNING: The closer to the center, the greater the pain.<br />
+        // Hover over entries for analysis.
+    </p>
+
+    <EditionChooser editions={editions} currentEdition={edition} />
+
+    <RadarLegend />
+    <RadarGrid blips={blips} />
+
+    <ContributionCta />
+</Layout>
