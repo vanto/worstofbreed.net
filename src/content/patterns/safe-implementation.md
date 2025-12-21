@@ -13,6 +13,7 @@ specialAbility:
 quote: "We are agile now. We have 'Release Train Engineers' and do 'Inspect and Adapt'. But deployment still takes 6 months."
 tags: ["Process", "Culture", "Agile"]
 dateAdded: 2025-12-21
+author: "vanto"
 ---
 
 # Analysis

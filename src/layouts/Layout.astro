@@ -1,5 +1,6 @@
 ---
 import NavBar from "../components/NavBar.astro";
+import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 import "@fontsource/space-mono/400.css";
 import "@fontsource/space-mono/400-italic.css";
@@ -42,6 +43,7 @@ const { title, ogImage } = Astro.props;
 
         <NavBar />
         <slot />
+        <Footer />
     </body>
     <style>
         body {

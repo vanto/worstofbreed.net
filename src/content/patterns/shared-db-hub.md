@@ -11,7 +11,7 @@ specialAbility:
   name: "Global Table Lock"
   description: "When the reporting team runs a SELECT, production stands still for 15 minutes."
 quote: "Why build an API? Just write directly to the table 'T_TRANSFER_V2_TEMP', the other system polls there every 10 seconds."
-tags: ["Legacy", "Integration", "Database]
+tags: ["Legacy", "Integration", "Database"]
 dateAdded: 2025-12-21
 ---
 

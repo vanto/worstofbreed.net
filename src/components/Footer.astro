@@ -1,0 +1,58 @@
+---
+const today = new Date();
+---
+
+<footer>
+    <div class="footer-content">
+        <div class="legal-links">
+            <a href="/imprint">Imprint</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/thanks">Thanks</a>
+        </div>
+        <div class="humor">
+            <p>
+                &copy; {today.getFullYear()} Worst of Breed. Certified 0% Best Practices.
+                <br />
+                <small>Made with ❤️ and a pinch of salt.</small>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    footer {
+        margin-top: var(--spacing-xl);
+        padding: var(--spacing-lg) 0;
+        border-top: 4px solid var(--ink);
+        text-align: center;
+    }
+
+    .footer-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+        align-items: center;
+    }
+
+    .legal-links {
+        display: flex;
+        gap: var(--spacing-md);
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .legal-links a {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .humor p {
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    small {
+        font-size: 0.8em;
+        opacity: 0.8;
+    }
+</style>

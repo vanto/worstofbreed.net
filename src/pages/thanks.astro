@@ -1,0 +1,128 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const patterns = await getCollection("patterns");
+const blips = await getCollection("blips");
+
+const contributors = new Set<string>();
+
+patterns.forEach((p) => {
+    if (p.data.author) {
+        contributors.add(p.data.author);
+    }
+});
+
+blips.forEach((b) => {
+    if (b.data.author) {
+        contributors.add(b.data.author);
+    }
+});
+
+const authors = Array.from(contributors).sort();
+---
+
+<Layout title="Thanks">
+    <main>
+        <h1>Sentinels of Shame</h1>
+        <p class="intro">
+            The following individuals have bravely stared into the abyss of bad
+            software architecture and took notes endlessly. We thank them for
+            documenting the horror.
+        </p>
+
+        <div class="contributors-grid">
+            {
+                authors.map((author) => (
+                    <a
+                        href={`https://github.com/${author}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="contributor-card"
+                    >
+                        <img
+                            src={`https://github.com/${author}.png`}
+                            alt={author}
+                            loading="lazy"
+                        />
+                        <span>@{author}</span>
+                    </a>
+                ))
+            }
+        </div>
+
+        {
+            authors.length === 0 && (
+                <div class="empty-state">
+                    <p>
+                        No one has confessed yet. Be the first to{" "}
+                        <a href="https://github.com/vanto/worst-of-breed">
+                            submit a PR
+                        </a>
+                        !
+                    </p>
+                </div>
+            )
+        }
+    </main>
+</Layout>
+
+<style>
+    main {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .intro {
+        font-size: 1.2rem;
+        margin-bottom: var(--spacing-xl);
+        font-style: italic;
+    }
+
+    .contributors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: var(--spacing-lg);
+    }
+
+    .contributor-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-md);
+        border: 2px solid var(--ink);
+        background: var(--paper);
+        box-shadow: 4px 4px 0px var(--shadow);
+        transition:
+            transform 0.2s,
+            box-shadow 0.2s;
+        text-decoration: none;
+        color: var(--ink);
+    }
+
+    .contributor-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px var(--shadow);
+        background: var(--accent);
+    }
+
+    .contributor-card img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+    }
+
+    .contributor-card span {
+        font-weight: bold;
+        font-family: var(--font-mono);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: var(--spacing-xl);
+        border: 2px dashed var(--ink);
+        opacity: 0.7;
+    }
+</style>
