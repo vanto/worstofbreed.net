@@ -14,7 +14,7 @@ const navItems = [
   {
     label: "Design Patterns",
     path: `/patterns`,
-    isActive: cleanPath === `/patterns`,
+    isActive: cleanPath.startsWith(`/patterns`),
   },
   //   {
   //     label: 'RUBE GOLDBERG AUTOMATION',
