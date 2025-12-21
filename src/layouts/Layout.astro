@@ -1,6 +1,9 @@
 ---
 import NavBar from "../components/NavBar.astro";
 import "../styles/global.css";
+import "@fontsource/space-mono/400.css";
+import "@fontsource/space-mono/400-italic.css";
+import "@fontsource/space-mono/700.css";
 const { title, ogImage } = Astro.props;
 ---
 
@@ -9,11 +12,7 @@ const { title, ogImage } = Astro.props;
         <title>worstofbreed.net - {title}</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
-            rel="stylesheet"
-        />
+
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="apple-touch-icon" href="/favicon.svg" />
 
