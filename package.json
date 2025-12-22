@@ -15,7 +15,6 @@
     "@fontsource/space-mono": "^5.2.9",
     "@resvg/resvg-wasm": "^2.6.2",
     "astro": "^5.16.6",
-    "astro-simpleanalytics-plugin": "^0.3.20",
     "satori": "^0.18.3",
     "satori-html": "^0.3.2"
   }
