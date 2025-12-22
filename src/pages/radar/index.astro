@@ -14,5 +14,34 @@ blips.forEach((b) => editions.add(b.data.edition || "2025"));
 const sortedEditions = Array.from(editions).sort(); // Lexicographically sort
 const latestEdition = sortedEditions[sortedEditions.length - 1];
 
-return Astro.redirect(`/radar/${latestEdition}`);
+import Layout from "../../layouts/Layout.astro";
+
+const latestUrl = `/radar/${latestEdition}`;
+---
+
+<Layout title="Redirecting...">
+    <div class="redirect-container">
+        <h2>Redirecting...</h2>
+        <p>
+            If you are not redirected automatically, <a href={latestUrl}
+                >click here for the latest edition</a
+            >.
+        </p>
+    </div>
+</Layout>
+
+<style>
+    .redirect-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 50vh;
+        text-align: center;
+    }
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+</style>
 ---
