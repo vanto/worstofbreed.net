@@ -29,9 +29,7 @@ export async function GET({ props }: { props: { pattern: CollectionEntry<"patter
 
  // Fetch fonts
   /* Fetch fonts */
-  const fontData = await fetch("https://github.com/google/fonts/raw/main/ofl/spacemono/SpaceMono-Regular.ttf").then(
-      (res) => res.arrayBuffer()
-  );
+  const fontData = await fs.readFile("./node_modules/@fontsource/space-mono/files/space-mono-latin-400-normal.woff");
 
   // Helper to resolve Twemoji URL
   const getIconCode = (char: string) => {
