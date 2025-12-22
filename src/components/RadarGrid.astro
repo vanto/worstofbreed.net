@@ -1,5 +1,4 @@
 ---
-// src/components/RadarGrid.astro
 const { blips } = Astro.props;
 
 const statusMap = {
@@ -8,9 +7,6 @@ const statusMap = {
   RESUME: { icon: "🤡", color: "#e6c300", label: "RESUME ONLY" },
   DESPAIR: { icon: "🚬", color: "#888", label: "DESPAIR" },
 };
-
-// Helper
-// const getBlips = (quadNr: number) => blips.filter(b => b.quad === quadNr); // Unused currently
 ---
 
 <div class="radar-layout">
@@ -27,7 +23,7 @@ const statusMap = {
     <span class="q-label q4-label">Footguns & Booby Traps</span>
 
     {
-      blips.map((blip, i) => {
+      blips.map((blip: (typeof blips)[number], i: number) => {
         const style = statusMap[blip.status as keyof typeof statusMap];
         // Positioning must be adjusted depending on the quadrant,
         // as x/y should be relative to the center (0,0 is the middle)
@@ -59,7 +55,7 @@ const statusMap = {
 
   <div class="radar-list">
     {
-      blips.map((blip, i) => {
+      blips.map((blip: (typeof blips)[number], i: number) => {
         const style = statusMap[blip.status as keyof typeof statusMap];
         return (
           <details class="list-item" data-id={blip.id}>
