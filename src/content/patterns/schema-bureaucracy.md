@@ -20,7 +20,7 @@ dateAdded: 2025-12-22
 author: "vanto"
 ---
 
-# Analysis
+## Analysis
 The clash of modern architecture with legacy governance. You are technically running independent PostgreSQL instances per service, but organizationally, you are treating them like a single shared Oracle RAC from 1998.
 
 **The Reality:**
