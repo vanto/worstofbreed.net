@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { title, dateAdded, tags } = entry.data;
+const { title, dateAdded, tags, author } = entry.data;
 const { Content } = await entry.render();
 
 const formattedDate = dateAdded.toISOString().split("T")[0];
@@ -35,6 +35,26 @@ const ogImage = `/og/${entry.slug}.png`;
                     <div class="analysis-meta">
                         <span>DATE: {formattedDate}</span>
                         <span>TAGS: {tags.join(", ")}</span>
+                        {
+                            author && (
+                                <div class="author-row">
+                                    <span>AUTHOR:</span>
+                                    <a
+                                        href={`https://github.com/${author}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="author-link"
+                                    >
+                                        <img
+                                            src={`https://github.com/${author}.png`}
+                                            alt={author}
+                                            class="author-avatar"
+                                        />
+                                        @{author}
+                                    </a>
+                                </div>
+                            )
+                        }
                     </div>
                     <div class="analysis-content">
                         <Content />
@@ -226,6 +246,34 @@ const ogImage = `/og/${entry.slug}.png`;
         display: flex;
         flex-direction: column;
         gap: 5px;
+    }
+
+    /* Author Styles */
+    .author-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .author-link {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        color: var(--ink);
+        font-weight: bold;
+    }
+
+    .author-link:hover {
+        text-decoration: underline;
+        color: var(--accent);
+    }
+
+    .author-avatar {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid var(--ink);
     }
 
     .analysis-content {

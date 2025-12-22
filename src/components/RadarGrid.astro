@@ -79,8 +79,31 @@ const statusMap = {
               >
                 {style.label}
               </div>
-              <div>
+              <div class="blip-description">
                 <blip.Content />
+              </div>
+              <div class="blip-meta">
+                <span class="meta-date">
+                  DATE: {blip.dateAdded.toISOString().split("T")[0]}
+                </span>
+                {blip.author && (
+                  <div class="meta-author">
+                    <span>AUTHOR:</span>
+                    <a
+                      href={`https://github.com/${blip.author}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="author-link"
+                    >
+                      <img
+                        src={`https://github.com/${blip.author}.png`}
+                        alt={blip.author}
+                        class="author-avatar"
+                      />
+                      @{blip.author}
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </details>
@@ -148,6 +171,7 @@ const statusMap = {
     --radar-bg: #f4f4f4;
     --border-color: #111;
     --grid-size: 600px; /* Größe des Radars */
+    --accent: #ff00ff; /* Reusing generic accent */
   }
 
   .radar-layout {
@@ -307,7 +331,7 @@ const statusMap = {
 
   .list-item.highlight {
     transform: translateX(-10px);
-    border-color: #ff00ff; /* Accent Color Highlight */
+    border-color: var(--accent);
     box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
   }
 
@@ -360,8 +384,49 @@ const statusMap = {
     padding: 2px 6px;
     font-size: 0.7rem;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     text-transform: uppercase;
+  }
+
+  .blip-description {
+    margin-bottom: 15px;
+  }
+
+  .blip-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.8rem;
+    border-top: 1px dotted #ccc;
+    padding-top: 10px;
+    color: #555;
+  }
+
+  .meta-author {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .author-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: #111;
+    font-weight: bold;
+  }
+
+  .author-link:hover {
+    text-decoration: underline;
+    color: var(--accent);
+  }
+
+  .author-avatar {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #111;
   }
 
   /* --- MOBILE --- */
