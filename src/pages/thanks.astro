@@ -36,7 +36,7 @@ const authors = Array.from(contributors.keys()).sort();
     title="Thanks"
     description="Acknowledgements and credits for the contributors and tools that made Worst of Breed possible."
 >
-    <main>
+    <div class="content-wrapper">
         <h1>Sentinels of Shame</h1>
         <p class="intro">
             The following individuals have bravely stared into the abyss of bad
@@ -96,11 +96,11 @@ const authors = Array.from(contributors.keys()).sort();
                 </div>
             )
         }
-    </main>
+    </div>
 </Layout>
 
 <style>
-    main {
+    .content-wrapper {
         max-width: 800px;
         margin: 0 auto;
     }
