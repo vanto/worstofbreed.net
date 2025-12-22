@@ -61,7 +61,10 @@ export async function getStaticPaths() {
 const { edition, editions, blips } = Astro.props;
 ---
 
-<Layout title={`Tech Horror Radar - ${edition}`}>
+<Layout
+    title={`Tech Horror Radar - ${edition}`}
+    description={`Tech Horror Radar ${edition}: A curated list of technologies causing pain in ${edition}.`}
+>
     <h1>Tech Horror <span style="color:#ff00ff">Radar</span></h1>
 
     <p

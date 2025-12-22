@@ -11,7 +11,10 @@ const allCards = (await getCollection("patterns")).sort(
 const allTags = [...new Set(allCards.flatMap((card) => card.data.tags))].sort();
 ---
 
-<Layout title="Worst Patterns">
+<Layout
+    title="Worst Patterns"
+    description="Discover architectural patterns that ensure job security. From Distributed Monolith to Database as IPC, these are the blueprints for eternal maintenance."
+>
     <p
         style="margin-bottom: 40px; max-width: 600px; border-left: 5px solid black; padding-left: 15px;"
     >

@@ -1,6 +1,6 @@
----
 layout: ../layouts/Layout.astro
 title: Privacy
+description: Privacy Policy for Worst of Breed.
 ---
 
 # Privacy Policy

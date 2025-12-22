@@ -1,6 +1,6 @@
----
 layout: ../layouts/Layout.astro
 title: Imprint
+description: Legal notice (Imprint) for Worst of Breed.
 ---
 
 # Imprint

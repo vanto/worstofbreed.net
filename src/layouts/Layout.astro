@@ -5,14 +5,19 @@ import "../styles/global.css";
 import "@fontsource/space-mono/400.css";
 import "@fontsource/space-mono/400-italic.css";
 import "@fontsource/space-mono/700.css";
-const { title, ogImage } = Astro.props;
+const { title, ogImage, frontmatter } = Astro.props;
+const description =
+    Astro.props.description ||
+    frontmatter?.description ||
+    "Worst of Breed - The premier destination for Resume-Driven Development, Over-Engineering, and Resume-Padding.";
 ---
 
 <html lang="en">
     <head>
-        <title>worstofbreed.net - {title}</title>
+        <title>worstofbreed.net - {title || frontmatter?.title}</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={description} />
 
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="apple-touch-icon" href="/favicon.svg" />
@@ -24,7 +29,11 @@ const { title, ogImage } = Astro.props;
         />
 
         <!-- Open Graph / Twitter -->
-        <meta property="og:title" content={`worstofbreed.net - ${title}`} />
+        <meta
+            property="og:title"
+            content={`worstofbreed.net - ${title || frontmatter?.title}`}
+        />
+        <meta property="og:description" content={description} />
         <meta property="og:type" content="website" />
         <meta property="twitter:card" content="summary_large_image" />
         {

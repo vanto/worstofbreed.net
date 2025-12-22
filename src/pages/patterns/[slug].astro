@@ -18,9 +18,13 @@ const { Content } = await entry.render();
 const formattedDate = dateAdded.toISOString().split("T")[0];
 
 const ogImage = `/og/${entry.slug}.png`;
+const description =
+    entry.data.specialAbility?.description ||
+    entry.data.quote ||
+    `Detailed analysis of the ${title} pattern.`;
 ---
 
-<Layout title={title} ogImage={ogImage}>
+<Layout title={title} ogImage={ogImage} description={description}>
     <div class="detail-container">
         <div class="detail-grid">
             <div class="card-column">
