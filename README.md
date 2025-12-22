@@ -1,43 +1,104 @@
-# Astro Starter Kit: Minimal
+# Worst of Breed
 
-```sh
-npm create astro@latest -- --template minimal
+**Worst of Breed** is a satirical exploration of software architecture trends, anti-patterns, and the darker side of modern engineering. It serves as a humorous "guide" to the questionable decisions and chaotic "best practices" that often plague the industry.
+
+> "If it works, it's probably legacy code."
+
+This project is built with **Astro** and designed to be deployed on **Cloudflare Pages**.
+
+## 🚀 Getting Started
+
+To run this project locally, you'll need [Node.js](https://nodejs.org/) installed.
+
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository-url>
+    cd worst-of-breed
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+    The site will be available at `http://localhost:4321`.
+
+4.  **Build for production:**
+    ```bash
+    npm run build
+    ```
+
+## 🏗️ Project Structure
+
+-   `src/content/`: Contains the content collections for **Patterns** and **Radar Blips**.
+-   `src/pages/`: Astro pages (routing).
+-   `src/components/`: Reusable UI components.
+-   `src/layouts/`: Page layouts.
+-   `public/`: Static assets.
+
+## � Contributing
+
+We encourage contributions! If you have identified a new "Worst of Breed" pattern or a blip for our satirical tech radar, please submit a Pull Request.
+
+### Adding a Pattern
+
+Patterns are the core content of the site. They are Markdown files located in `src/content/patterns/`.
+
+1.  Create a new `.md` file in `src/content/patterns/` (e.g., `resume-driven-development.md`).
+2.  Use the following Frontmatter schema:
+
+```markdown
+---
+title: "Resume Driven Development"
+category: "Culture" # Options: Architecture, Process, Legacy, Culture, AI, Code, Security, Infra, Frontend
+# imagePlaceholder: "optional-image-path" 
+stats:
+  latency: 80         # 0-100
+  pain: 90            # 0-100
+  maintainability: 10 # 0-100
+  resumeValue: "High" # Free text
+specialAbility:
+  name: "Job Hopper"
+  description: "Instantly qualifies for a Senior Architect role at a FAANG company."
+quote: "It's not about what the business needs, it's about what looks good on LinkedIn."
+dateAdded: 2025-12-22
+tags: ["career", "complexity", "hype"]
+author: "YourGithubHandle" # Optional
+---
+
+## Analysis
+Your satirical description of the pattern goes here. Use Markdown for formatting.
+
+**The Reality:**
+Your satirical description of the pattern goes here. Use Markdown for formatting.
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Adding a Radar Blip
 
-## 🚀 Project Structure
+The Tech Radar tracks the movement of technologies and trends into various statuses (like "BURN" or "DESPAIR"). Blips are Markdown files located in `src/content/blips/`.
 
-Inside of your Astro project, you'll see the following folders and files:
+1.  Create a new `.md` file in `src/content/blips/`.
+2.  Use the following Frontmatter schema:
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```markdown
+---
+name: "Serverless Micro-Frontends"
+quadrant: 1 # 1: Languages & Frameworks, 2: Platforms, 3: Techniques, 4: Tools
+status: "DESPAIR" # Options: BURN, CONTAINMENT, RESUME, DESPAIR
+x: 0.5 # Coordinate on the radar (0 to 1 usually, relative to quadrant center/edge)
+y: 0.3 # Coordinate on the radar
+dateAdded: 2025-12-22
+edition: "2025" # The year/edition of the radar
+author: "YourGithubHandle" # Optional
+---
+
+Short description of why this blip exists.
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 📜 License
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+[MIT](LICENSE)
