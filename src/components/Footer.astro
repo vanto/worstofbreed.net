@@ -9,6 +9,25 @@ const today = new Date();
             <a href="/privacy">Privacy</a>
             <a href="/thanks">Thanks</a>
         </div>
+        <div class="social-links">
+            <a
+                href="https://bsky.app/profile/worstofbreed.net"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Bluesky"
+            >
+                <svg
+                    viewBox="0 0 600 530"
+                    width="24"
+                    height="24"
+                    fill="currentColor"
+                >
+                    <path
+                        d="M135.72 44.03c66.496 49.921 138.02 151.14 164.28 205.46 26.262-54.316 97.782-155.54 164.28-205.46 47.98-36.021 125.72-63.892 125.72 24.795 0 17.712-10.155 148.79-16.111 223.36-6.226 77.94-52.753 52.753-124.57 36.567 0 0 63.892 27.203 63.892 86.411 0 59.21-66.275 87.822-113.67 96.697-47.395 8.902-103.55-22.39-99.71-118-3.837 95.613-59.992 126.9-107.41 118-47.394-8.902-113.67-37.487-113.67-96.697 0-59.208 63.892-86.411 63.892-86.411-71.815 16.186-118.34 41.373-124.57-36.567-5.956-74.57-16.111-205.65-16.111-223.36 0-88.687 77.742-60.816 125.72-24.795z"
+                    ></path>
+                </svg>
+            </a>
+        </div>
         <div class="humor">
             <p>
                 &copy; {today.getFullYear()} Worst of Breed. Certified 0% Best Practices.
@@ -44,6 +63,23 @@ const today = new Date();
     .legal-links a {
         text-transform: uppercase;
         font-weight: bold;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: var(--spacing-md);
+    }
+
+    .social-links a {
+        color: var(--ink);
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+    }
+
+    .social-links a:hover {
+        color: var(--accent);
     }
 
     .humor p {
