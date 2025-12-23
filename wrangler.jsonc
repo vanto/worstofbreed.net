@@ -1,14 +1,9 @@
 {
-	"main": "dist/_worker.js/index.js",
 	"name": "worst-of-breed",
-  "compatibility_date": "2025-12-20",
-  "compatibility_flags": [
-    "nodejs_compat",
-    "global_fetch_strictly_public"
-  ],
+	"compatibility_date": "2025-12-23",
 	"assets": {
-		"binding": "ASSETS",
-		"directory": "./dist"
+		"directory": "./dist",
+		"not_found_handling": "404-page"
 	},
 	"observability": {
     "enabled": true

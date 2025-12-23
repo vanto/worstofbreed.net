@@ -1,0 +1,150 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="404: Service Discovery Failed">
+    <div class="container">
+        <div class="error-code">404</div>
+        <h1>Service Discovery Failed</h1>
+
+        <p class="message">
+            The requested resource has been successfully decoupled from our
+            monolith. Unfortunately, the service mesh is currently unable to
+            locate it due to a misconfigured YAML file in the 47th subplot of
+            the Kubernetes cluster.
+        </p>
+
+        <div class="technical-details">
+            <div class="detail-row">
+                <span class="label">Error Code:</span>
+                <span class="value">ID-10-T</span>
+            </div>
+            <div class="detail-row">
+                <span class="label">Microservice:</span>
+                <span class="value code">content-provider-v2-legacy-final</span>
+            </div>
+            <div class="detail-row">
+                <span class="label">Status:</span>
+                <span class="value alert">DEPRECATED</span>
+            </div>
+            <div class="detail-row">
+                <span class="label">Resolution:</span>
+                <span class="value">Please wait for the rewrite in Rust.</span>
+            </div>
+        </div>
+
+        <a href="/" class="cta-button">Rollback to Home</a>
+    </div>
+</Layout>
+
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 4rem 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .error-code {
+        font-size: 8rem;
+        font-weight: bold;
+        color: var(--accent);
+        line-height: 1;
+        margin-bottom: 1rem;
+        text-shadow: 4px 4px 0 var(--ink);
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        border-bottom: 4px solid var(--accent);
+        display: inline-block;
+        padding-bottom: 0.5rem;
+    }
+
+    .message {
+        font-size: 1.25rem;
+        margin-bottom: 3rem;
+        max-width: 600px;
+    }
+
+    .technical-details {
+        background: var(--ink);
+        color: var(--paper);
+        padding: 2rem;
+        border: 4px solid var(--accent);
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 3rem;
+        text-align: left;
+        box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px dashed #555;
+        padding-bottom: 0.5rem;
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .label {
+        color: #aaa;
+        font-weight: bold;
+    }
+
+    .value {
+        font-family: var(--font-mono);
+        text-align: right;
+    }
+
+    .value.code {
+        color: var(--accent);
+    }
+
+    .value.alert {
+        color: #ff4444;
+        font-weight: bold;
+        animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.4;
+        }
+    }
+
+    .cta-button {
+        display: inline-block;
+        background: var(--ink);
+        color: var(--paper);
+        padding: 1rem 2rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        border: 2px solid var(--ink);
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+
+    .cta-button:hover {
+        background: var(--paper);
+        color: var(--ink);
+        box-shadow: 4px 4px 0 var(--accent);
+        transform: translate(-2px, -2px);
+    }
+</style>

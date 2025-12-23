@@ -1,14 +1,9 @@
 import { defineConfig } from 'astro/config';
 
-import cloudflare from '@astrojs/cloudflare';
-
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://worstofbreed.net',
-  adapter: cloudflare({
-    imageService: 'compile',
-  }),
   vite: {
     ssr: {
       external: ['node:fs/promises'],
