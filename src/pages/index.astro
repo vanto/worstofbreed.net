@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import PatternOfTheDay from "../components/PatternOfTheDay.astro";
 ---
 
 <Layout
@@ -16,32 +17,38 @@ import Layout from "../layouts/Layout.astro";
         </p>
     </div>
 
-    <div class="grid">
-        <a href="/patterns" class="card">
-            <div class="card-header">
-                <h3>Design Patterns</h3>
-                <span class="icon">🏗️</span>
-            </div>
-            <p>
-                Discover the architectural patterns that ensure job security.
-                From "Distributed Monolith" to "Database as IPC", these are the
-                blueprints for eternal maintenance.
-            </p>
-            <div class="cta">Go to Hell &rarr;</div>
-        </a>
+    <div class="bento-grid">
+        <div class="potd-container">
+            <PatternOfTheDay />
+        </div>
 
-        <a href="/radar" class="card">
-            <div class="card-header">
-                <h3>Tech Radar</h3>
-                <span class="icon">☢️</span>
-            </div>
-            <p>
-                A curated list of technologies that should be illegal. We track
-                the industry's most successful cargo cults and zombie
-                frameworks.
-            </p>
-            <div class="cta">Get Radiated &rarr;</div>
-        </a>
+        <div class="nav-cards">
+            <a href="/patterns" class="card">
+                <div class="card-header">
+                    <h3>Design Patterns</h3>
+                    <span class="icon">🏗️</span>
+                </div>
+                <p>
+                    Discover the architectural patterns that ensure job
+                    security. From "Distributed Monolith" to "Database as IPC",
+                    these are the blueprints for eternal maintenance.
+                </p>
+                <div class="cta">Go to Hell &rarr;</div>
+            </a>
+
+            <a href="/radar" class="card">
+                <div class="card-header">
+                    <h3>Tech Radar</h3>
+                    <span class="icon">☢️</span>
+                </div>
+                <p>
+                    A curated list of technologies that should be illegal. We
+                    track the industry's most successful cargo cults and zombie
+                    frameworks.
+                </p>
+                <div class="cta">Get Radiated &rarr;</div>
+            </a>
+        </div>
     </div>
 
     <div class="testimonials">
@@ -136,16 +143,38 @@ import Layout from "../layouts/Layout.astro";
         color: var(--accent);
     }
 
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    .bento-grid {
+        display: flex;
+        flex-direction: column;
         gap: 2rem;
         margin-bottom: 4rem;
     }
 
+    .nav-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
     @media (min-width: 768px) {
-        .grid {
-            gap: 4rem;
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: stretch; /* Change start to stretch to match heights */
+        }
+
+        .potd-container {
+            height: 100%;
+            order: 2;
+        }
+
+        /* Make the POTD component fill height if possible, 
+           though its content is dynamic */
+        :global(pattern-of-the-day),
+        :global(pattern-of-the-day .pattern-content),
+        :global(pattern-of-the-day .brutalist-card) {
+            height: 100%;
         }
     }
 
