@@ -15,6 +15,11 @@ const description =
     Astro.props.description ||
     frontmatter?.description ||
     "Worst of Breed - The premier destination for Resume-Driven Development, Over-Engineering, and Resume-Padding.";
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImage = ogImage
+    ? new URL(ogImage, Astro.site)
+    : new URL("/web-app-manifest-512x512.png", Astro.site);
 ---
 
 <html lang="en">
@@ -46,8 +51,20 @@ const description =
             href={spaceMono700}
         />
 
+        <link
+            rel="icon"
+            type="image/png"
+            href="/favicon-96x96.png"
+            sizes="96x96"
+        />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="apple-touch-icon" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
         <link rel="sitemap" href="/sitemap-index.xml" />
         <link
             rel="alternate"
@@ -57,6 +74,7 @@ const description =
         />
 
         <!-- Open Graph / Twitter -->
+        <meta property="og:url" content={canonicalURL} />
         <meta
             property="og:title"
             content={`worstofbreed.net - ${title || frontmatter?.title}`}
@@ -64,22 +82,8 @@ const description =
         <meta property="og:description" content={description} />
         <meta property="og:type" content="website" />
         <meta property="twitter:card" content="summary_large_image" />
-        {
-            ogImage && (
-                <meta
-                    property="og:image"
-                    content={new URL(ogImage, Astro.site)}
-                />
-            )
-        }
-        {
-            ogImage && (
-                <meta
-                    property="twitter:image"
-                    content={new URL(ogImage, Astro.site)}
-                />
-            )
-        }
+        <meta property="og:image" content={socialImage} />
+        <meta property="twitter:image" content={socialImage} />
     </head>
     <body>
         <h1>Worst<span style="color:var(--accent)">Of</span>Breed_</h1>
