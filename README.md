@@ -70,7 +70,7 @@ specialAbility:
 quote: "It's not about what the business needs, it's about what looks good on LinkedIn."
 dateAdded: 2025-12-22
 tags: ["career", "complexity", "hype"]
-author: "YourGithubHandle" # Optional
+contributor: "YourGithubHandle" # Optional
 ---
 
 ## Analysis
@@ -96,7 +96,7 @@ x: 0.5 # Coordinate on the radar (0 to 1 usually, relative to quadrant center/ed
 y: 0.3 # Coordinate on the radar
 dateAdded: 2025-12-22
 edition: "2025" # The year/edition of the radar
-author: "YourGithubHandle" # Optional
+contributor: "YourGithubHandle" # Optional
 ---
 
 Short description of why this blip exists.
