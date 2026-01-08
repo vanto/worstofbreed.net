@@ -42,6 +42,6 @@ export default defineConfig({
       }
     }
   }, sitemap({
-    filter: (page) => !page.includes('/social')
+    filter: (page) => !page.includes('/social') && !page.includes('/imprint') && !page.includes('/privacy')
   })]
 });
