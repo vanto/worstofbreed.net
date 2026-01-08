@@ -1,0 +1,51 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import TestimonialCard from "../components/TestimonialCard.astro";
+
+const testimonials = await getCollection("testimonials");
+const title = "What 'Experts' Say";
+const description = "Reviews from the world's top Resume-Driven Developers.";
+---
+
+<Layout title={title} description={description}>
+    <header>
+        <h1>{title}</h1>
+        <p class="subtitle">{description}</p>
+    </header>
+
+    <div class="grid">
+        {testimonials.map((t) => <TestimonialCard testimonial={t} />)}
+    </div>
+</Layout>
+
+<style>
+    header {
+        margin-bottom: 4rem;
+        border-bottom: var(--border-thick);
+        padding-bottom: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+        color: var(--ink);
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+        .grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+</style>

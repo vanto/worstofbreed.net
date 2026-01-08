@@ -1,0 +1,220 @@
+---
+import { getCollection } from "astro:content";
+import TestimonialCard from "./TestimonialCard.astro";
+
+const testimonials = await getCollection("testimonials");
+---
+
+<div class="carousel-container">
+    <div class="carousel-track" id="track">
+        {
+            [...testimonials, ...testimonials, ...testimonials].map((t, i) => (
+                <div class="card-wrapper" data-index={i}>
+                    <TestimonialCard testimonial={t} />
+                </div>
+            ))
+        }
+    </div>
+
+    <div class="controls">
+        <button id="prev" class="nav-btn" aria-label="Previous testimonial"
+            >&larr;</button
+        >
+        <button id="next" class="nav-btn" aria-label="Next testimonial"
+            >&rarr;</button
+        >
+    </div>
+</div>
+
+<script>
+    const track = document.getElementById("track");
+    const prevBtn = document.getElementById("prev");
+    const nextBtn = document.getElementById("next");
+    let intervalId: NodeJS.Timeout;
+    let scrollTimeout: NodeJS.Timeout;
+    let isSkipping = false;
+
+    if (track && prevBtn && nextBtn) {
+        // --- LOGIC FOR ENDLESS RING ---
+        // Content is triplicated: [Set 1][Set 2][Set 3]
+        // We initially position in [Set 2].
+        // If we drift into [Set 1] or [Set 3], we silently warp back to the equivalent spot in [Set 2].
+
+        const getCardWidth = () => {
+            const card = track.querySelector(".card-wrapper");
+            return card ? card.clientWidth + 32 : 0; // 32 is 2rem gap
+        };
+
+        const getSetWidth = () => {
+            // Using scrollWidth / 3 is safe because we have exactly 3 sets
+            return track.scrollWidth / 3;
+        };
+
+        const teleportToCenter = () => {
+            isSkipping = true;
+            track.style.scrollBehavior = "auto"; // Disable smooth for instant jump
+            const setWidth = getSetWidth();
+
+            if (track.scrollLeft < setWidth) {
+                // Too far left (Set 1) -> Jump fwd to Set 2
+                track.scrollLeft += setWidth;
+            } else if (track.scrollLeft >= 2 * setWidth) {
+                // Too far right (Set 3) -> Jump back to Set 2
+                track.scrollLeft -= setWidth;
+            }
+
+            // Re-enable smooth (or clear inline style to let class dictate, but we removed class)
+            // We only need smooth for button clicks anyway.
+            requestAnimationFrame(() => {
+                track.style.scrollBehavior = "";
+                isSkipping = false;
+            });
+        };
+
+        // Initial Position: Center
+        const init = () => {
+            // Wait for layout
+            setTimeout(() => {
+                track.style.scrollBehavior = "auto";
+                track.scrollLeft = getSetWidth();
+                startAutoPlay();
+            }, 50);
+        };
+
+        // Scroll Handler to check bounds
+        // use 'scroll' with debounce to detect 'end of movement'
+        track.addEventListener("scroll", () => {
+            if (isSkipping) return;
+
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                // When scroll "settles"
+                const setWidth = getSetWidth();
+                if (
+                    track.scrollLeft < 50 ||
+                    track.scrollLeft > 2.5 * setWidth
+                ) {
+                    // Emergency reset if way out of bounds
+                    teleportToCenter();
+                } else if (
+                    track.scrollLeft < setWidth ||
+                    track.scrollLeft >= 2 * setWidth
+                ) {
+                    // Standard reset
+                    teleportToCenter();
+                }
+            }, 100); // 100ms debounce
+        });
+
+        const goNext = () => {
+            stopAutoPlay();
+            track.scrollBy({ left: getCardWidth(), behavior: "smooth" });
+            startAutoPlay();
+        };
+
+        const goPrev = () => {
+            stopAutoPlay();
+            track.scrollBy({ left: -getCardWidth(), behavior: "smooth" });
+            startAutoPlay();
+        };
+
+        const startAutoPlay = () => {
+            clearInterval(intervalId);
+            intervalId = setInterval(goNext, 5000);
+        };
+
+        const stopAutoPlay = () => {
+            clearInterval(intervalId);
+        };
+
+        nextBtn.addEventListener("click", goNext);
+        prevBtn.addEventListener("click", goPrev);
+
+        // Interactions pause autoplay
+        track.addEventListener("mouseenter", stopAutoPlay);
+        track.addEventListener("touchstart", stopAutoPlay, { passive: true });
+
+        // Resume on leave
+        track.addEventListener("mouseleave", startAutoPlay);
+
+        // Start
+        init();
+    }
+</script>
+
+<style>
+    .carousel-container {
+        position: relative;
+        width: 100%;
+        /* Ensure buttons can be placed relative to this */
+    }
+
+    .carousel-track {
+        display: flex;
+        gap: 2rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        /* create-react-app-style reset for scroll-behavior to avoid conflict with JS smooth scroll */
+        scroll-behavior: auto;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        padding: 1rem 0; /* Space for shadow */
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .carousel-track::-webkit-scrollbar {
+        display: none;
+    }
+
+    .card-wrapper {
+        scroll-snap-align: start;
+        flex: 0 0 100%; /* Mobile: 100% width */
+    }
+
+    .controls {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .nav-btn {
+        background: var(--paper);
+        border: 2px solid var(--ink);
+        color: var(--ink);
+        font-family: inherit;
+        font-size: 1.5rem;
+        cursor: pointer;
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        box-shadow: 4px 4px 0px var(--shadow);
+    }
+
+    .nav-btn:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px var(--accent);
+        background: var(--accent);
+        color: var(--paper);
+    }
+
+    .nav-btn:active {
+        transform: translate(0, 0);
+        box-shadow: 2px 2px 0px var(--ink);
+    }
+
+    @media (min-width: 768px) {
+        .card-wrapper {
+            flex: 0 0 45%; /* Desktop: Show roughly 2 cards */
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .card-wrapper {
+            flex: 0 0 32%; /* Large Desktop: Show roughly 3 cards */
+        }
+    }
+</style>

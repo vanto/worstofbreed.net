@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import PatternOfTheDay from "../components/PatternOfTheDay.astro";
+import TestimonialMarquee from "../components/TestimonialMarquee.astro";
 ---
 
 <Layout
@@ -52,21 +53,10 @@ import PatternOfTheDay from "../components/PatternOfTheDay.astro";
     </div>
 
     <div class="testimonials">
-        <h3>What "Experts" Say</h3>
-        <div class="testimonial-grid">
-            <blockquote class="quote">
-                "Thanks to Worst of Breed, we successfully migrated our 500-line
-                PHP script to a Kubernetes cluster with 12 microservices.
-                Latency increased by 4000%, but our resume value skyrocketed!"
-                <cite>— Senior Enterprise Architect @ Fortune 500 Company</cite>
-            </blockquote>
-            <blockquote class="quote">
-                "Finally, a framework that understands that complexity IS the
-                product. We now spend 90% of our time configuring YAML and 10%
-                coding. Perfection."
-                <cite>— Lead DevOps Ninja Rockstar</cite>
-            </blockquote>
-        </div>
+        <a href="/testimonials" class="header-link"
+            ><h3>What "Experts" Say</h3></a
+        >
+        <TestimonialMarquee />
     </div>
 
     <div class="manifesto">
@@ -182,36 +172,25 @@ import PatternOfTheDay from "../components/PatternOfTheDay.astro";
         margin: 4rem 0;
     }
 
+    .header-link {
+        text-decoration: none;
+        border-bottom: none;
+        color: inherit;
+    }
+
+    .header-link:hover h3 {
+        background: var(--accent);
+        color: var(--paper);
+    }
+
     .testimonials h3 {
         text-transform: uppercase;
         border-bottom: 2px solid var(--ink);
         display: inline-block;
         margin-bottom: 2rem;
-    }
-
-    .testimonial-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-    }
-
-    .quote {
-        border-left: 8px solid var(--accent);
-        padding-left: 1rem;
-        margin: 0;
-        background: var(--paper);
-        padding: 1.5rem;
-        font-style: italic;
-    }
-
-    .quote cite {
-        display: block;
-        margin-top: 1rem;
-        font-weight: bold;
-        font-style: normal;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        color: var(--shadow);
+        transition:
+            background 0.2s,
+            color 0.2s;
     }
 
     .manifesto {

@@ -1,0 +1,5 @@
+{
+  "quote": "Thanks to Worst of Breed, we successfully migrated our 500-line PHP script to a Kubernetes cluster with 12 microservices. Latency increased by 4000%, but our resume value skyrocketed!",
+  "author": "Senior Enterprise Architect",
+  "role": "Fortune 500 Company"
+}

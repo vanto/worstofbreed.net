@@ -38,7 +38,17 @@ const blipsCollection = defineCollection({
   }),
 });
 
+const testimonialsCollection = defineCollection({
+  type: 'data',
+  schema: z.object({
+    quote: z.string(),
+    author: z.string(),
+    role: z.string(),
+  }),
+});
+
 export const collections = {
   'patterns': patternsCollection,
   'blips': blipsCollection,
+  'testimonials': testimonialsCollection,
 };

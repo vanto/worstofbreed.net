@@ -1,0 +1,69 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+    testimonial: CollectionEntry<"testimonials">;
+    // Optional data-index for the marquee logic if needed, though usually passed as attribute
+    dataIndex?: number;
+}
+
+const { testimonial, dataIndex } = Astro.props;
+---
+
+<div class="testimonial-card" data-index={dataIndex}>
+    <blockquote class="quote">
+        "{testimonial.data.quote}"
+        <cite>
+            <span class="author">{testimonial.data.author}</span>
+            <span class="role">{testimonial.data.role}</span>
+        </cite>
+    </blockquote>
+</div>
+
+<style>
+    .testimonial-card {
+        background: var(--paper);
+        border-left: 8px solid var(--accent);
+        padding: 1.5rem;
+        box-sizing: border-box;
+        height: 100%; /* Ensure consistent height in grid */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .testimonial-card:hover {
+        border-left: 8px solid var(--ink);
+    }
+
+    .quote {
+        margin: 0;
+        font-style: italic;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: space-between;
+    }
+
+    cite {
+        display: block;
+        margin-top: 1rem;
+        font-style: normal;
+        font-size: 0.9rem;
+        border-top: 1px dashed var(--shadow);
+        padding-top: 0.5rem;
+    }
+
+    .author {
+        display: block;
+        font-weight: bold;
+        color: var(--ink);
+    }
+
+    .role {
+        display: block;
+        color: var(--accent);
+        font-size: 0.8em;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+</style>
