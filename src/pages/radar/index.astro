@@ -15,8 +15,9 @@ const sortedEditions = Array.from(editions).sort(); // Lexicographically sort
 const latestEdition = sortedEditions[sortedEditions.length - 1];
 
 import Layout from "../../layouts/Layout.astro";
+import { LATEST_PUBLISHED_EDITION } from "../../config";
 
-const latestUrl = `/radar/${latestEdition}`;
+const latestUrl = `/radar/${LATEST_PUBLISHED_EDITION}`;
 ---
 
 <Layout

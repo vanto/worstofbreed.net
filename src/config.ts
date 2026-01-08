@@ -1,0 +1,1 @@
+export const LATEST_PUBLISHED_EDITION = "2025";

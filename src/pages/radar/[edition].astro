@@ -59,6 +59,7 @@ export async function getStaticPaths() {
 }
 
 const { edition, editions, blips } = Astro.props;
+import { LATEST_PUBLISHED_EDITION } from "../../config";
 ---
 
 <Layout
@@ -74,7 +75,11 @@ const { edition, editions, blips } = Astro.props;
         // Hover over entries for analysis.
     </p>
 
-    <EditionChooser editions={editions} currentEdition={edition} />
+    <EditionChooser
+        editions={editions}
+        currentEdition={edition}
+        latestPublishedEdition={LATEST_PUBLISHED_EDITION}
+    />
 
     <RadarLegend />
     <RadarGrid blips={blips} />

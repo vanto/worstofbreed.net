@@ -2,9 +2,10 @@
 interface Props {
     editions: string[];
     currentEdition: string;
+    latestPublishedEdition: string;
 }
 
-const { editions, currentEdition } = Astro.props;
+const { editions, currentEdition, latestPublishedEdition } = Astro.props;
 ---
 
 <div class="edition-chooser">
@@ -17,6 +18,7 @@ const { editions, currentEdition } = Astro.props;
             editions.map((edition) => (
                 <option value={edition} selected={edition === currentEdition}>
                     {edition}
+                    {edition > latestPublishedEdition ? " (preview)" : ""}
                 </option>
             ))
         }

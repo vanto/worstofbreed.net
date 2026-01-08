@@ -1,4 +1,5 @@
 import { getCollection } from "astro:content";
+import { LATEST_PUBLISHED_EDITION } from "../config";
 
 export async function GET() {
   const blips = await getCollection("blips");
@@ -19,8 +20,8 @@ export async function GET() {
   const latestEdition = sortedEditions[sortedEditions.length - 1];
 
   // format: /source /target status_code
-  // Redirect /radar to /radar/<latest_edition>
-  const redirects = `/radar /radar/${latestEdition} 302`;
+  // Redirect /radar to /radar/<latest_published_edition>
+  const redirects = `/radar /radar/${LATEST_PUBLISHED_EDITION} 302`;
 
   return new Response(redirects, {
     headers: {
