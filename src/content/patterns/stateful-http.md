@@ -1,9 +1,9 @@
 ---
 title: "Stateful HTTP"
-category: "Performance"
+category: "Frontend"
 imagePlaceholder: "🏚"
 stats:
-  latency: 5000
+  latency: 100
   pain: 83
   maintainability: 1
   resumeValue: "LIABILITY"
@@ -13,7 +13,7 @@ specialAbility:
 quote: "Transmitting and rendering an entire HTML page is wasteful! Let's track frontend state on the server, and only deliver changes! Efficiency!"
 tags: ["Integration", "HTTP", "Performance"]
 dateAdded: 2026-01-10
-contributor: buherator
+contributor: v-p-b
 ---
 
 ## Analysis
