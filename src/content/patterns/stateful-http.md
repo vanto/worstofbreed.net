@@ -9,7 +9,7 @@ stats:
   resumeValue: "LIABILITY"
 specialAbility:
   name: "Webapp from Hell"
-  description: "Latency is now optimized from 100ms to 5s while users regularly loose their work by opening the app on another tab."
+  description: "Latency is now optimized from 100ms to 5s while users regularly lose their work by opening the app on another tab."
 quote: "Transmitting and rendering an entire HTML page is wasteful! Let's track frontend state on the server, and only deliver changes! Efficiency!"
 tags: ["Integration", "HTTP", "Performance"]
 dateAdded: 2026-01-10
