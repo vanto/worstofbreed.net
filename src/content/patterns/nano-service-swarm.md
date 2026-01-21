@@ -18,6 +18,8 @@ specialAbility:
 quote: "We shouldn't just refactor the User Module; let's put the 'DateFormatter' into its own container so we can scale date parsing independently."
 dateAdded: 2026-01-21
 contributor: "daniel309"
+relatedBlips: ["one-to-twenty"]
+relatedPatterns: ["distributed-monolith"]
 ---
 
 ## Analysis
