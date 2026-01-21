@@ -58,7 +58,7 @@ const statusMap = {
       blips.map((blip: (typeof blips)[number], i: number) => {
         const style = statusMap[blip.status as keyof typeof statusMap];
         return (
-          <details class="list-item" data-id={blip.id}>
+          <details class="list-item" id={blip.id} data-id={blip.id}>
             <summary class="list-summary">
               <div class="summary-left">
                 <span class="list-num" style={`background: ${style.color};`}>
@@ -111,40 +111,76 @@ const statusMap = {
 
 <script>
   // Simple Vanilla JS Interaction
-  // Wir warten bis das DOM da ist
   document.addEventListener("DOMContentLoaded", () => {
-    const visualBlips = document.querySelectorAll(".radar-blip");
-    const listItems = document.querySelectorAll(".list-item");
+    const visualBlips = document.querySelectorAll<HTMLElement>(".radar-blip");
+    const listItems = document.querySelectorAll<HTMLElement>(".list-item");
 
     function setHighlight(id: any, active: boolean) {
       // Blip im Radar finden
-      const blip = document.querySelector(`.radar-blip[data-id="${id}"]`);
+      const blip = document.querySelector(
+        `.radar-blip[data-id="${id}"]`,
+      ) as HTMLElement | null;
       // List Item finden
       const item = document.querySelector(`.list-item[data-id="${id}"]`);
 
       if (active) {
         blip?.classList.add("highlight");
         item?.classList.add("highlight");
-        // Farbe des Blips beim Highlight ändern (optional)
-        if (blip)
-          (blip as HTMLElement).style.backgroundColor = (
-            blip as HTMLElement
-          ).dataset.color!;
+        // Farbe des Blips beim Highlight ändern
+        if (blip) blip.style.backgroundColor = blip.dataset.color || "";
       } else {
         blip?.classList.remove("highlight");
         item?.classList.remove("highlight");
-        if (blip) (blip as HTMLElement).style.backgroundColor = ""; // Reset
+        if (blip) blip.style.backgroundColor = ""; // Reset
+      }
+    }
+
+    // New: Selection Logic (Deep Linking)
+    function selectBlip(id: any) {
+      // Remove previous selection
+      document
+        .querySelectorAll(".is-selected")
+        .forEach((el) => el.classList.remove("is-selected"));
+      document.querySelectorAll("details[open]").forEach((el) => {
+        if (el.id !== id) el.removeAttribute("open");
+      });
+
+      const blip = document.querySelector(
+        `.radar-blip[data-id="${id}"]`,
+      ) as HTMLElement | null;
+      const item = document.getElementById(id) as HTMLDetailsElement | null;
+
+      if (blip && item) {
+        blip.classList.add("is-selected");
+        blip.style.backgroundColor = blip.dataset.color || "";
+        item.classList.add("is-selected");
+        item.open = true;
+
+        // Update URL without scrolling if possible, or just let default behavior happen
+        // If we are called from hash change, we don't need to push.
+        if (window.location.hash.substring(1) !== id) {
+          history.pushState(null, "", `#${id}`);
+        }
+
+        // Scroll list item into view if it's not visible?
+        // Native anchor navigation does this usually.
+        item.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
     }
 
     // Event Listeners für Radar Blips
     visualBlips.forEach((blip) => {
       blip.addEventListener("mouseenter", () =>
-        setHighlight((blip as HTMLElement).dataset.id, true),
+        setHighlight(blip.dataset.id, true),
       );
       blip.addEventListener("mouseleave", () =>
-        setHighlight((blip as HTMLElement).dataset.id, false),
+        setHighlight(blip.dataset.id, false),
       );
+      // Click handling
+      blip.addEventListener("click", (e) => {
+        e.preventDefault(); // Prevent default if it was a link, though it's div
+        selectBlip(blip.dataset.id);
+      });
     });
 
     // Event Listeners für List Items (Summary Bereich)
@@ -152,12 +188,58 @@ const statusMap = {
       const summary = item.querySelector("summary");
       if (summary) {
         summary.addEventListener("mouseenter", () =>
-          setHighlight((item as HTMLElement).dataset.id, true),
+          setHighlight(item.dataset.id, true),
         );
         summary.addEventListener("mouseleave", () =>
-          setHighlight((item as HTMLElement).dataset.id, false),
+          setHighlight(item.dataset.id, false),
         );
+        // Toggle handling
+        // We use click on summary to detect user intent to "select" this one
+        summary.addEventListener("click", () => {
+          // We delay slightly to let the details toggle happen or just force selection
+          // If we just click, details toggles. We want to update URL and style.
+          // But if we call selectBlip, it might interfere with toggle.
+          // Let's just update the URL and styling.
+          const id = item.dataset.id;
+          // Update URL
+          if (window.location.hash.substring(1) !== id) {
+            history.pushState(null, "", `#${id}`);
+          }
+
+          // Update visual selection
+          document
+            .querySelectorAll<HTMLElement>(".is-selected")
+            .forEach((el) => {
+              if (el !== item && el.dataset.id !== id)
+                el.classList.remove("is-selected");
+            });
+          const blip = document.querySelector(
+            `.radar-blip[data-id="${id}"]`,
+          ) as HTMLElement | null;
+
+          // Toggle logic: if it's closing, we might want to preserve selection or not?
+          // Usually selecting means "focusing".
+          item.classList.add("is-selected");
+          if (blip) {
+            blip.classList.add("is-selected");
+            blip.style.backgroundColor = blip.dataset.color || "";
+          }
+        });
       }
+    });
+
+    // Handle initial hash
+    if (window.location.hash) {
+      const id = window.location.hash.substring(1);
+      // Small delay to ensure rendering? usually fine.
+      // We use requestAnimationFrame just to be safe with styles
+      requestAnimationFrame(() => selectBlip(id));
+    }
+
+    // Handle hash changes (back/forward button)
+    window.addEventListener("hashchange", () => {
+      const id = window.location.hash.substring(1);
+      if (id) selectBlip(id);
     });
   });
 </script>
@@ -297,17 +379,20 @@ const statusMap = {
   }
 
   /* Highlight State für Blip */
-  .radar-blip.highlight {
+  .radar-blip.highlight,
+  .radar-blip.is-selected {
     transform: translate(-50%, -50%) scale(1.5);
     z-index: 20;
     color: #fff;
     border-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
-  .radar-blip.highlight .blip-num {
+  .radar-blip.highlight .blip-num,
+  .radar-blip.is-selected .blip-num {
     display: none;
   }
-  .radar-blip.highlight .blip-icon {
+  .radar-blip.highlight .blip-icon,
+  .radar-blip.is-selected .blip-icon {
     display: block;
     font-size: 1.2rem;
   } /* Icon zeigen bei Highlight */
@@ -327,7 +412,8 @@ const statusMap = {
     transition: transform 0.2s;
   }
 
-  .list-item.highlight {
+  .list-item.highlight,
+  .list-item.is-selected {
     transform: translateX(-10px);
     border-color: var(--accent);
     box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
