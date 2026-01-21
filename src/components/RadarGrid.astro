@@ -1,5 +1,14 @@
 ---
+import { getCollection } from "astro:content";
+
 const { blips } = Astro.props;
+
+// Fetch all data for linking
+const allPatterns = await getCollection("patterns");
+const allBlips = await getCollection("blips");
+
+const patternsMap = new Map(allPatterns.map((p) => [p.slug, p]));
+const blipsMap = new Map(allBlips.map((b) => [b.slug, b]));
 
 const statusMap = {
   BURN: { icon: "💀", color: "#ff0055", label: "BURN WITH FIRE" },
@@ -82,6 +91,95 @@ const statusMap = {
                 <span class="meta-date">
                   DATE: {blip.dateAdded.toISOString().split("T")[0]}
                 </span>
+
+                {
+                  /* Related Patterns Logic */
+                  (() => {
+                    const directPatterns = blip.relatedPatterns || [];
+                    // Reverse lookup: Patterns that reference this blip
+                    const reversePatterns = allPatterns
+                      .filter((p) =>
+                        p.data.relatedBlips?.some(
+                          (ref: any) => ref.id === blip.id || ref === blip.id,
+                        ),
+                      )
+                      .map((p) => ({ collection: "patterns", id: p.slug }));
+
+                    const uniquePatternIds = [
+                      ...new Set([
+                        ...directPatterns.map((r: any) => r.id || r),
+                        ...reversePatterns.map((r: any) => r.id || r),
+                      ]),
+                    ];
+
+                    if (uniquePatternIds.length === 0) return null;
+
+                    return (
+                      <div class="meta-related">
+                        <span>RELATED PATTERNS:</span>
+                        <div class="related-tags">
+                          {uniquePatternIds.map((pid) => {
+                            const p = patternsMap.get(pid as string);
+                            if (!p) return null;
+                            return (
+                              <a
+                                href={`/patterns/${p.slug}`}
+                                class="related-tag pattern-tag"
+                              >
+                                {p.data.title}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })()
+                }
+
+                {
+                  /* Related Blips Logic */
+                  (() => {
+                    const directBlips = blip.relatedBlips || [];
+                    // Reverse lookup: Blips that reference this blip
+                    const reverseBlips = allBlips
+                      .filter((b) =>
+                        b.data.relatedBlips?.some(
+                          (ref: any) => ref.id === blip.id || ref === blip.id,
+                        ),
+                      )
+                      .map((b) => ({ collection: "blips", id: b.slug }));
+
+                    const uniqueBlipIds = [
+                      ...new Set([
+                        ...directBlips.map((r: any) => r.id || r),
+                        ...reverseBlips.map((r: any) => r.id || r),
+                      ]),
+                    ].filter((id) => id !== blip.id); // Exclude self
+
+                    if (uniqueBlipIds.length === 0) return null;
+
+                    return (
+                      <div class="meta-related">
+                        <span>RELATED BLIPS:</span>
+                        <div class="related-tags">
+                          {uniqueBlipIds.map((bid) => {
+                            const b = blipsMap.get(bid as string);
+                            if (!b) return null;
+                            return (
+                              <a
+                                href={`/radar/${b.data.edition || "2025"}#${b.slug}`}
+                                class="related-tag blip-tag"
+                              >
+                                {b.data.name}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })()
+                }
+
                 {blip.contributor && (
                   <div class="meta-contributor">
                     <span>CONTRIBUTOR:</span>
@@ -530,5 +628,48 @@ const statusMap = {
     .radar-list {
       width: 100%;
     }
+  }
+  .meta-related {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start; /* label at top if tags wrap multiple lines */
+    gap: 10px;
+    margin-top: 5px;
+  }
+
+  .meta-related > span {
+    white-space: nowrap;
+    padding-top: 4px; /* Align text with tags visually if needed */
+  }
+
+  .related-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .related-tag {
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  .related-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .pattern-tag {
+    background: #f0f0f0;
+  }
+
+  .blip-tag {
+    background: #fff;
   }
 </style>

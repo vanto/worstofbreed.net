@@ -1,4 +1,4 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection, reference, z } from 'astro:content';
 import { date } from 'astro:schema';
 
 const patternsCollection = defineCollection({
@@ -21,6 +21,8 @@ const patternsCollection = defineCollection({
     dateAdded: date(),
     tags: z.array(z.string()),
     contributor: z.string().optional(),
+    relatedPatterns: z.array(reference('patterns')).optional(),
+    relatedBlips: z.array(reference('blips')).optional(),
   }),
 });
 
@@ -35,6 +37,8 @@ const blipsCollection = defineCollection({
     dateAdded: date(),
     edition: z.string(),
     contributor: z.string().optional(),
+    relatedPatterns: z.array(reference('patterns')).optional(),
+    relatedBlips: z.array(reference('blips')).optional(),
   }),
 });
 

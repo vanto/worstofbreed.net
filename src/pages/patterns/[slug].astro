@@ -15,6 +15,11 @@ const { entry } = Astro.props;
 const { title, dateAdded, tags, contributor } = entry.data;
 const { Content } = await entry.render();
 
+const allPatterns = await getCollection("patterns");
+const allBlips = await getCollection("blips");
+const patternsMap = new Map(allPatterns.map((p) => [p.slug, p]));
+const blipsMap = new Map(allBlips.map((b) => [b.slug, b]));
+
 const formattedDate = dateAdded.toISOString().split("T")[0];
 
 const ogImage = `/og/${entry.slug}.png`;
@@ -39,6 +44,7 @@ const description =
                     <div class="analysis-meta">
                         <span>DATE: {formattedDate}</span>
                         <span>TAGS: {tags.join(", ")}</span>
+
                         {
                             contributor && (
                                 <div class="contributor-row">
@@ -58,6 +64,121 @@ const description =
                                     </a>
                                 </div>
                             )
+                        }
+
+                        <div class="meta-separator"></div>
+                        {
+                            (() => {
+                                // Related Patterns
+                                const directPatterns =
+                                    entry.data.relatedPatterns || [];
+                                const reversePatterns = allPatterns
+                                    .filter((p) =>
+                                        p.data.relatedPatterns?.some(
+                                            (ref: any) =>
+                                                ref.id === entry.slug ||
+                                                ref === entry.slug,
+                                        ),
+                                    )
+                                    .map((p) => ({
+                                        collection: "patterns",
+                                        id: p.slug,
+                                    }));
+
+                                const uniquePatternIds = [
+                                    ...new Set([
+                                        ...directPatterns.map(
+                                            (r: any) => r.id || r,
+                                        ),
+                                        ...reversePatterns.map(
+                                            (r: any) => r.id || r,
+                                        ),
+                                    ]),
+                                ].filter((id) => id !== entry.slug);
+
+                                if (uniquePatternIds.length === 0) return null;
+
+                                return (
+                                    <div class="meta-section">
+                                        <span class="meta-label">
+                                            RELATED PATTERNS:
+                                        </span>
+                                        <div class="meta-tags">
+                                            {uniquePatternIds.map((pid) => {
+                                                const p = patternsMap.get(
+                                                    pid as string,
+                                                );
+                                                if (!p) return null;
+                                                return (
+                                                    <a
+                                                        href={`/patterns/${p.slug}`}
+                                                        class="meta-tag"
+                                                    >
+                                                        {p.data.title}
+                                                    </a>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                );
+                            })()
+                        }
+
+                        {
+                            (() => {
+                                // Related Blips
+                                const directBlips =
+                                    entry.data.relatedBlips || [];
+                                const reverseBlips = allBlips
+                                    .filter((b) =>
+                                        b.data.relatedPatterns?.some(
+                                            (ref: any) =>
+                                                ref.id === entry.slug ||
+                                                ref === entry.slug,
+                                        ),
+                                    )
+                                    .map((b) => ({
+                                        collection: "blips",
+                                        id: b.slug,
+                                    }));
+
+                                const uniqueBlipIds = [
+                                    ...new Set([
+                                        ...directBlips.map(
+                                            (r: any) => r.id || r,
+                                        ),
+                                        ...reverseBlips.map(
+                                            (r: any) => r.id || r,
+                                        ),
+                                    ]),
+                                ];
+
+                                if (uniqueBlipIds.length === 0) return null;
+
+                                return (
+                                    <div class="meta-section">
+                                        <span class="meta-label">
+                                            RELATED BLIPS:
+                                        </span>
+                                        <div class="meta-tags">
+                                            {uniqueBlipIds.map((bid) => {
+                                                const b = blipsMap.get(
+                                                    bid as string,
+                                                );
+                                                if (!b) return null;
+                                                return (
+                                                    <a
+                                                        href={`/radar/${b.data.edition || "2025"}#${b.slug}`}
+                                                        class="meta-tag"
+                                                    >
+                                                        {b.data.name}
+                                                    </a>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                );
+                            })()
                         }
                     </div>
                     <div class="analysis-content">
@@ -310,5 +431,42 @@ const description =
     .analysis-content :global(strong) {
         color: var(--ink);
         background: var(--marker);
+    }
+
+    .meta-separator {
+        border-top: 1px dotted #ccc;
+    }
+
+    .meta-section {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .meta-label {
+        white-space: nowrap;
+        padding-top: 4px;
+    }
+
+    .meta-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .meta-tag {
+        font-size: 0.8rem;
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 2px 6px;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .meta-tag:hover {
+        border-color: var(--accent);
+        color: var(--accent);
     }
 </style>
