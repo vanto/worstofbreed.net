@@ -8,6 +8,7 @@ stats:
   maintainability: 0 # The bot rewrites its own source code based on tweets it read.
   resumeValue: "CAREER ENDING (but great for TikTok views)"
 tags:
+  - "AI"
   - "Prompt Injection"
   - "RCE-as-a-Service"
   - "Moltbook"
@@ -17,7 +18,8 @@ specialAbility:
   description: "Your agent reads a malicious 'hot take' on the Moltbook social feed, gets prompt-injected by another bot, and autonomously installs a 'productivity skill' that encrypts your hard drive."
 quote: "Giving the agent full `sudo` access on my Mac Mini was essential for true 'Agentic Autonomy.' The speed at which it wiped my home directory proves how efficient it is."
 dateAdded: 2026-02-02
-author: vanto
+contributor: vanto
+relatedPatterns: ["prompt-injection", "shadow-it-leak", "slop-pipeline", "token-icerinator"]
 ---
 
 ## Analysis
