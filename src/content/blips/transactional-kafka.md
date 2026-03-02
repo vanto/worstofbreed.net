@@ -4,7 +4,7 @@ quadrant: 3
 status: "CONTAINMENT"
 x: 20
 y: 40
-edition: "2025"
+edition: "2026"
 dateAdded: 2026-03-02
 contributor: "jeeger"
 ---
