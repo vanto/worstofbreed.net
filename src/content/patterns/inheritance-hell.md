@@ -10,7 +10,7 @@ stats:
 specialAbility:
   name: "Hardcode the flexibility"
   description: "The need to add new functionality without burning your budget later on refactorings"
-quote: "We use inheritance to reuse code... until requirement change. Then Barbara Liskov come after us with some "solid" arguments."
+quote: "We use inheritance to reuse code... until requirement change. Then Barbara Liskov come after us with some \"solid\" arguments."
 dateAdded: 2026-01-08
 tags: ["Architecture", "Maintenance"]
 contributor: "davidmpaz"
