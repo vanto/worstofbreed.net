@@ -18,7 +18,7 @@ await init();
 export async function getStaticPaths() {
   const patterns = await getCollection("patterns");
   return patterns.map((pattern) => ({
-    params: { slug: pattern.slug },
+    params: { slug: pattern.id },
     props: { pattern },
   }));
 }

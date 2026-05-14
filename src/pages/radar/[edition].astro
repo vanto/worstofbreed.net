@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import RadarGrid from "../../components/RadarGrid.astro";
 import RadarLegend from "../../components/RadarLegend.astro";
 import Layout from "../../layouts/Layout.astro";
@@ -37,10 +37,10 @@ export async function getStaticPaths() {
             // Render blips
             const blips = await Promise.all(
                 editionBlipsRaw.map(async (entry) => {
-                    const { Content } = await entry.render();
+                    const { Content } = await render(entry);
                     return {
                         ...entry.data,
-                        id: entry.slug,
+                        id: entry.id,
                         Content,
                     };
                 }),

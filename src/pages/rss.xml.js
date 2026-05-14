@@ -63,7 +63,7 @@ export async function GET(context) {
                 ${htmlContent}
             </div>
              <div style="background: #eee; border-top: 2px solid #000; padding: 10px; text-align: right; font-size: 0.8em;">
-                <a href="https://worstofbreed.net/patterns/${post.slug}/" style="color: #000; font-weight: bold;">🔗 PERMALINK</a>
+                <a href="https://worstofbreed.net/patterns/${post.id}/" style="color: #000; font-weight: bold;">🔗 PERMALINK</a>
             </div>
         </div>
       `;
@@ -72,7 +72,7 @@ export async function GET(context) {
         title: post.data.title,
         pubDate: post.data.dateAdded,
         description: post.data.quote,
-        link: `/patterns/${post.slug}/`,
+        link: `/patterns/${post.id}/`,
         content: content,
       };
     })),

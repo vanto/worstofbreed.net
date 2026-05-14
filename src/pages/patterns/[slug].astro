@@ -1,28 +1,28 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import Card from "../../components/Card.astro";
 
 export async function getStaticPaths() {
     const cards = await getCollection("patterns");
     return cards.map((entry) => ({
-        params: { slug: entry.slug },
+        params: { slug: entry.id },
         props: { entry },
     }));
 }
 
 const { entry } = Astro.props;
 const { title, dateAdded, tags, contributor } = entry.data;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 
 const allPatterns = await getCollection("patterns");
 const allBlips = await getCollection("blips");
-const patternsMap = new Map(allPatterns.map((p) => [p.slug, p]));
-const blipsMap = new Map(allBlips.map((b) => [b.slug, b]));
+const patternsMap = new Map(allPatterns.map((p) => [p.id, p]));
+const blipsMap = new Map(allBlips.map((b) => [b.id, b]));
 
 const formattedDate = dateAdded.toISOString().split("T")[0];
 
-const ogImage = `/og/${entry.slug}.png`;
+const ogImage = `/og/${entry.id}.png`;
 const description =
     entry.data.specialAbility?.description ||
     entry.data.quote ||
@@ -76,13 +76,13 @@ const description =
                                     .filter((p) =>
                                         p.data.relatedPatterns?.some(
                                             (ref: any) =>
-                                                ref.id === entry.slug ||
-                                                ref === entry.slug,
+                                                ref.id === entry.id ||
+                                                ref === entry.id,
                                         ),
                                     )
                                     .map((p) => ({
                                         collection: "patterns",
-                                        id: p.slug,
+                                        id: p.id,
                                     }));
 
                                 const uniquePatternIds = [
@@ -94,7 +94,7 @@ const description =
                                             (r: any) => r.id || r,
                                         ),
                                     ]),
-                                ].filter((id) => id !== entry.slug);
+                                ].filter((id) => id !== entry.id);
 
                                 if (uniquePatternIds.length === 0) return null;
 
@@ -111,7 +111,7 @@ const description =
                                                 if (!p) return null;
                                                 return (
                                                     <a
-                                                        href={`/patterns/${p.slug}`}
+                                                        href={`/patterns/${p.id}`}
                                                         class="meta-tag"
                                                     >
                                                         {p.data.title}
@@ -133,13 +133,13 @@ const description =
                                     .filter((b) =>
                                         b.data.relatedPatterns?.some(
                                             (ref: any) =>
-                                                ref.id === entry.slug ||
-                                                ref === entry.slug,
+                                                ref.id === entry.id ||
+                                                ref === entry.id,
                                         ),
                                     )
                                     .map((b) => ({
                                         collection: "blips",
-                                        id: b.slug,
+                                        id: b.id,
                                     }));
 
                                 const uniqueBlipIds = [
@@ -168,7 +168,7 @@ const description =
                                                 if (!b) return null;
                                                 return (
                                                     <a
-                                                        href={`/radar/${b.data.edition || "2025"}#${b.slug}`}
+                                                        href={`/radar/${b.data.edition || "2025"}#${b.id}`}
                                                         class="meta-tag"
                                                     >
                                                         {b.data.name}

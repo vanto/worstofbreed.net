@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import "../../../styles/global.css";
 import "@fontsource/space-mono/400.css";
 import "@fontsource/space-mono/400-italic.css";
@@ -8,7 +8,7 @@ import "@fontsource/space-mono/700.css";
 export async function getStaticPaths() {
     const cards = await getCollection("patterns");
     return cards.map((entry) => ({
-        params: { slug: entry.slug },
+        params: { slug: entry.id },
         props: { entry },
     }));
 }
@@ -24,7 +24,7 @@ const {
     dateAdded,
     tags,
 } = entry.data;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 
 const formattedDate = dateAdded.toISOString().split("T")[0];
 ---
@@ -94,13 +94,13 @@ const formattedDate = dateAdded.toISOString().split("T")[0];
         </script>
     </head>
     <body>
-        <div class="controls" data-slug={entry.slug}>
+        <div class="controls" data-slug={entry.id}>
             <h1>Social Assets for: {title}</h1>
             <div class="button-group">
                 <button id="download-front">Download Front</button>
                 <button id="download-back">Download Back</button>
             </div>
-            <a href={`/patterns/${entry.slug}`}>&larr; Back to Pattern</a>
+            <a href={`/patterns/${entry.id}`}>&larr; Back to Pattern</a>
         </div>
 
         <div class="preview-area">
@@ -154,7 +154,7 @@ const formattedDate = dateAdded.toISOString().split("T")[0];
             <div id="social-back" class="social-card back">
                 <header class="card-header invert">
                     <span>// ANALYSIS_LOG</span>
-                    <span class="slug-ref">{entry.slug}</span>
+                    <span class="slug-ref">{entry.id}</span>
                 </header>
                 <div class="meta-tags invert">
                     <span>DATE: {formattedDate}</span>

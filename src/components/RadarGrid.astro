@@ -7,8 +7,8 @@ const { blips } = Astro.props;
 const allPatterns = await getCollection("patterns");
 const allBlips = await getCollection("blips");
 
-const patternsMap = new Map(allPatterns.map((p) => [p.slug, p]));
-const blipsMap = new Map(allBlips.map((b) => [b.slug, b]));
+const patternsMap = new Map(allPatterns.map((p) => [p.id, p]));
+const blipsMap = new Map(allBlips.map((b) => [b.id, b]));
 
 const statusMap = {
   BURN: { icon: "💀", color: "#ff0055", label: "BURN WITH FIRE" },
@@ -103,7 +103,7 @@ const statusMap = {
                           (ref: any) => ref.id === blip.id || ref === blip.id,
                         ),
                       )
-                      .map((p) => ({ collection: "patterns", id: p.slug }));
+                      .map((p) => ({ collection: "patterns", id: p.id }));
 
                     const uniquePatternIds = [
                       ...new Set([
@@ -123,7 +123,7 @@ const statusMap = {
                             if (!p) return null;
                             return (
                               <a
-                                href={`/patterns/${p.slug}`}
+                                href={`/patterns/${p.id}`}
                                 class="related-tag pattern-tag"
                               >
                                 {p.data.title}
@@ -147,7 +147,7 @@ const statusMap = {
                           (ref: any) => ref.id === blip.id || ref === blip.id,
                         ),
                       )
-                      .map((b) => ({ collection: "blips", id: b.slug }));
+                      .map((b) => ({ collection: "blips", id: b.id }));
 
                     const uniqueBlipIds = [
                       ...new Set([
@@ -167,7 +167,7 @@ const statusMap = {
                             if (!b) return null;
                             return (
                               <a
-                                href={`/radar/${b.data.edition || "2025"}#${b.slug}`}
+                                href={`/radar/${b.data.edition || "2025"}#${b.id}`}
                                 class="related-tag blip-tag"
                               >
                                 {b.data.name}

@@ -4,7 +4,7 @@ import { getCollection } from "astro:content";
 const patterns = await getCollection("patterns");
 const patternsData = patterns.map((p) => ({
     title: p.data.title,
-    slug: p.slug,
+    id: p.id,
     category: p.data.category,
     stats: p.data.stats,
     quote: p.data.quote,
@@ -147,9 +147,9 @@ const patternsData = patterns.map((p) => ({
             }
 
             // Links
-            const slug = pattern.slug;
+            const id = pattern.id;
             const links = this.querySelectorAll<HTMLAnchorElement>("a");
-            links.forEach((l) => (l.href = `/patterns/${slug}`));
+            links.forEach((l) => (l.href = `/patterns/${id}`));
         }
     }
     customElements.define("pattern-of-the-day", PatternOfTheDay);

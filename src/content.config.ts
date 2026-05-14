@@ -1,8 +1,10 @@
-import { defineCollection, reference, z } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
 import { date } from 'astro:schema';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 const patternsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ base: './src/content/patterns', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
     category: z.enum(['Architecture', 'Process', 'Legacy', 'Culture', 'AI', 'Code', 'Security', 'Infra', 'Frontend']),
@@ -27,7 +29,7 @@ const patternsCollection = defineCollection({
 });
 
 const blipsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ base: './src/content/blips', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     name: z.string(),
     quadrant: z.number().min(1).max(4),
@@ -43,7 +45,7 @@ const blipsCollection = defineCollection({
 });
 
 const testimonialsCollection = defineCollection({
-  type: 'data',
+  loader: glob({ base: './src/content/testimonials', pattern: '*.json' }),
   schema: z.object({
     quote: z.string(),
     author: z.string(),

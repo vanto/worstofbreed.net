@@ -16,9 +16,6 @@ export async function GET() {
     editions.add("2025");
   }
 
-  const sortedEditions = Array.from(editions).sort(); // Lexicographically sort
-  const latestEdition = sortedEditions[sortedEditions.length - 1];
-
   // format: /source /target status_code
   // Redirect /radar to /radar/<latest_published_edition>
   const redirects = `/radar /radar/${LATEST_PUBLISHED_EDITION} 302`;
