@@ -1,7 +1,7 @@
 ---
 title: "The Prompt-Injected Autonomous SRE"
 category: "AI"
-imagePlaceholder: "🤖"
+imagePlaceholder: "💀"
 stats:
   latency: 95
   pain: 100
